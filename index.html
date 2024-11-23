@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="utility-first.css">
+    <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
+    <title>Document</title>
+
+    <script type="text/hyperscript">
+        def changePage_Text()
+            fetch `/letters/${$page}/text.txt` set newText to result
+
+            set #readble-text-p's innerText to newText
+
+        end
+
+        def changePage_Audio()
+            set #audio-source's src to `letters/${$page}/audio.wav`
+            set audioElement to #audio
+            call audioElement.load()
+        end
+
+        def changePage_Image()
+            set images_per_page to [3,3,1]
+
+            tell #gallery
+                remove <img/> in you
+            
+            set imageId to 1
+            repeat while imageId <= images_per_page[$page-1]
+                make an <img/>
+                    set it's src to `letters/${$page}/${imageId}.jpeg`
+                    put it at end of #gallery
+                set imageId to imageId+1 
+            end
+
+        end
+        
+        def changePage(i)
+            set tempPage to $page+i
+            if tempPage>0 and  tempPage<4
+                set $page to $page+i
+                changePage_Text()
+                changePage_Audio()
+                changePage_Image()
+            end
+        end
+
+      </script>
+
+</head>
+<body class="background-color-primary text-color-secundary" _="init 
+    set $page to 1
+    call changePage(0)
+    end
+    ">
+
+<div id="image-overlay" class="display-none" _="on click add .display-none">
+    <img id="image-overlayed" src="" alt="">
+</div>
+<div id="all">
+
+    <div class="title flex-row justify-center align-center width-100">
+        <span class="margin-right-10 clickable" _="on click call changePage(-1) end"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg></span>
+        <h1>Letters for us</h1>
+        <span class="margin-left-10 clickable" _="on click call changePage(1) end"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg> </span>
+    </div>
+
+    <div class="content-container">
+        <div id="gallery" _="
+            on click
+                if target's tagName is 'IMG'
+                    log target
+                    set targetsImage to target's src
+                    log targetsImage
+                    set #image-overlayed's src to targetsImage
+                    remove .display-none from #image-overlay
+                end
+            end">
+        </div>
+        <div id="readble-text" class="flex-column flex-5 background-color-white">
+            <p id="readble-text-p"></p>
+        </div>
+    </div>
+    <div>
+        <audio id="audio" controls>
+            <source id="audio-source" src="letters/1/audio.wav" type="audio/wav">
+        </audio>
+    </div>
+</div>
+
+</body>
+</html>
