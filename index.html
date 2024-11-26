@@ -23,7 +23,7 @@
         end
 
         def changePage_Image()
-            set images_per_page to [3,3,1]
+            set images_per_page to [3,3,1,1]
 
             tell #gallery
                 remove <img/> in you
@@ -40,11 +40,12 @@
         
         def changePage(i)
             set tempPage to $page+i
-            if tempPage>0 and  tempPage<4
+            if tempPage>0 and  tempPage<5
                 set $page to $page+i
                 changePage_Text()
                 changePage_Audio()
                 changePage_Image()
+
             end
         end
 
