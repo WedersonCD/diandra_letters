@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css.css">
     <link rel="stylesheet" href="utility-first.css">
-    <script src="/_hyperscript.min.js"></script>
+    <script src="hyperscript.min.js"></script>
     <title>Document</title>
 
     <script type="text/hyperscript">
         def changePage_Text()
-            fetch `/letters/${$page}/text.txt` set newText to result
+            fetch `letters/${$page}/text.txt` set newText to result
 
             set #readble-text-p's innerText to newText
 
